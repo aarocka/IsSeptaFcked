@@ -1,6 +1,5 @@
 use axum::{
     extract::Host,
-    http::StatusCode,
     response::{Html, IntoResponse, Json},
     routing::get,
     Router,
@@ -31,7 +30,7 @@ async fn index(Host(host): Host) -> impl IntoResponse {
     let rr_data = septa::rr::get_data();
     let bus_data = septa::bus::get_data();
 
-    let mut tera = match Tera::new("templates/**/*.html") {
+    let tera = match Tera::new("templates/**/*.html") {
         Ok(t) => t,
         Err(e) => {
             tracing::error!("Template error: {}", e);
@@ -80,7 +79,7 @@ async fn index(Host(host): Host) -> impl IntoResponse {
 async fn faq(Host(host): Host) -> impl IntoResponse {
     let is_sfw = sfw::is_sfw(&host);
     
-    let mut tera = match Tera::new("templates/**/*.html") {
+    let tera = match Tera::new("templates/**/*.html") {
         Ok(t) => t,
         Err(e) => {
             tracing::error!("Template error: {}", e);

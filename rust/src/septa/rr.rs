@@ -32,7 +32,7 @@ static RAW_DATA: Lazy<Arc<RwLock<Vec<SeptaTrainResponse>>>> =
     Lazy::new(|| Arc::new(RwLock::new(vec![])));
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-struct SeptaTrainResponse {
+pub struct SeptaTrainResponse {
     trainno: String,
     #[serde(rename = "SOURCE")]
     source: String,

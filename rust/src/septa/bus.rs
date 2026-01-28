@@ -1,7 +1,6 @@
 use chrono::{DateTime, Local};
 use once_cell::sync::Lazy;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 use std::sync::{Arc, RwLock};
 use std::time::Duration;
 use tokio::time;
@@ -27,7 +26,7 @@ static RAW_DATA: Lazy<Arc<RwLock<Vec<SeptaBusResponse>>>> =
     Lazy::new(|| Arc::new(RwLock::new(vec![])));
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-struct SeptaBusResponse {
+pub struct SeptaBusResponse {
     route: String,
     // Add other fields as needed
 }
@@ -116,7 +115,7 @@ async fn fetch_and_process() -> Result<BusStatusData, Box<dyn std::error::Error>
     })
 }
 
-fn get_suspended_routes(data: &[SeptaBusResponse]) -> Vec<BusRouteData> {
+fn get_suspended_routes(_data: &[SeptaBusResponse]) -> Vec<BusRouteData> {
     // For now, return empty. The actual logic would check for suspended routes
     vec![]
 }
