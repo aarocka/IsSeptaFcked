@@ -44,11 +44,11 @@ async fn main() {
         .layer(cors)
         .layer(TraceLayer::new_for_http());
 
-    // Get port from environment or default to 5000
+    // Get port from environment or default to 5001
     let port = std::env::var("PORT")
-        .unwrap_or_else(|_| "5000".to_string())
+        .unwrap_or_else(|_| "5001".to_string())
         .parse::<u16>()
-        .unwrap_or(5000);
+        .unwrap_or(5001);
 
     let addr = SocketAddr::from(([0, 0, 0, 0], port));
     tracing::info!("Listening on {}", addr);
