@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row row-status">
+    <div class="col-md-12 col-xs-12">
+        <h2>Regional Rail Is:</h2>
+        
+        <div class="status {{ rr_status_class }}">{{ rr_status }}</div>
+        
+        {% if rr_late %}
+            {% for train in rr_late %}
+                <div style="font-size: smaller;">{{ train }}</div>
+            {% endfor %}
+            <p></p>
+        {% endif %}
+        
+        {% if rr_message %}
+            <div id="message">{{ rr_message | safe }}</div>
+        {% endif %}
+        <p></p>
+        
+        <div id="status-time">Train data last updated: {{ rr_status_time }}</div>
+    </div>
+</div>
+
+<!-- Add some spacing -->
+<div class="row">
+    <div class="col-md-12 col-xs-12 status-row">
+        <br>
+    </div>
+</div>
+
+<div class="row row-status">
+    <div class="col-md-12 col-xs-12">
+        <h2>Buses Are:</h2>
+        
+        <div class="status {{ bus_status_class }}">{{ bus_status }}</div>
+        
+        {% if bus_suspended %}
+            {% for bus in bus_suspended %}
+                <div style="font-size: smaller;">{{ bus }}</div>
+            {% endfor %}
+            <p></p>
+        {% endif %}
+        
+        {% if bus_message %}
+            <div id="message">{{ bus_message }}</div>
+        {% endif %}
+        <p></p>
+        
+        <div id="status-time">Bus data last updated: {{ bus_status_time }}</div>
+    </div>
+</div>
+
+<!-- Add some spacing -->
+<div class="row">
+    <div class="col-md-12 col-xs-12 status-row">
+        <br>
+    </div>
+</div>
+
+<div class="row row-not-status">
+    <div class="col-md-offset-4 col-md-6 col-sm-offset-3 col-sm-6 col-xs-12">
+        <h3>Media Coverage</h3>
+        <ul>
+            <li><a href="https://technical.ly/philly/2020/05/21/is-septa-fucked-doug-muth-operating-data-impact-coronavirus-pandemic-transit-transportation/">What SEPTA's operating data says about the impact of the coronavirus pandemic</a></li>
+            <li><a href="https://technical.ly/philly/2020/01/03/siri-ios-is-septa-fucked-shortcut/">Now Siri can tell you just how badly SEPTA is f*ucked today</a></li>
+            <li><a href="https://technical.ly/philly/2019/09/29/evolution-doug-muth-irreverent-is-septa-fucked-delay-tracker/">The evolution of Doug Muth's irreverent SEPTA delay tracker</a></li>
+            <li><a href="https://technical.ly/philly/2018/11/16/septa-regional-rail-turbo-fcked/">That snow storm sent SEPTA trains to new "Turbo F*cked" status</a></li>
+            <li><a href="http://www.phillymag.com/news/2012/09/26/web-app-tells-septa-f%ED/">New Web App Tells You When SEPTA Is F#$%ed</a></li>
+            <li><a href="http://technical.ly/philly/2016/07/06/is-septa-fucked-douglas-muth/">Now more timely than ever: Is SEPTA F*cked?</a></li>
+        </ul>
+        
+        <h3>Blog posts</h3>
+        <ul>
+            <li><a href="https://www.dmuth.org/hey-siri-is-septa-fcked/">"Hey Siri! Is SEPTA F*cked?"</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-offset-4 col-md-6 col-sm-offset-3 col-sm-6 col-xs-12">
+        <h3>Awards</h3>
+        <ul>
+            <li><a href="https://technical.ly/startups/network-awards-winners-3/">Best Side Project, Net/Work Philly</a></li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

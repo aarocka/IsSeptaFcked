@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Status dashboard for SEPTA Regional Rail trains">
+    
+    <title>{{ title }}</title>
+    
+    <!-- Bootstrap Core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-7s5uDGW3AHqw6xtJmNNtr+OBRJUlgkNJEo78P4b0yRw= sha512-nNo+yCHEyn0smMxSswnf/OnX6/KwJuZTlNZBjauKhTK0c+zT+q5JOCx0UFhXQ6rJR9jg6Es8gPuD2uZcYDLqSw==" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha256-KXn5puMvxCw+dAYznun+drMdG1IFl3agK0p/pqT9KAo= sha512-2e8qq0ETcfWRI4HJBzQiA3UoyFk6tbNyG+qSaIBZLyW9Xf3sWZHN/lxe9fTh1U45DpPf07yj94KsUHHWe4Yk1A==" crossorigin="anonymous"></script>
+    
+    <!-- Font Awesome -->
+    <script src="https://use.fontawesome.com/2325ebd002.js"></script>
+    
+    <!-- Override with our CSS -->
+    <link rel='stylesheet' href='/public/css/style.css'>
+    
+    <!-- Meta tags for social sharing -->
+    <meta property='og:title' content='Is SEPTA Fucked?'>
+    <meta property='og:description' content='Status Dashboard for SEPTA Regional Rail trains and buses on Philadelphia public transit'>
+    <meta property='og:image' content='https://raw.githubusercontent.com/dmuth/IsSeptaFcked/master/img/septa.png'>
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@dmuth">
+    <meta name="twitter:title" content="Is SEPTA Fucked?">
+    <meta name="twitter:description" content="Status Dashboard for SEPTA Regional Rail trains and buses on Philadelphia public transit">
+    <meta name="twitter:img" content="https://raw.githubusercontent.com/dmuth/IsSeptaFcked/master/img/septa.png">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Is SEPTA Fucked?</a>
+            </div>
+            
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="max-height: none;">
+                <ul class="nav navbar-nav">
+                    <li><a href="/faq"><span class="glyphicon"></span>&nbsp; FAQ</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="/api"><span class="glyphicon"></span>&nbsp; API</a></li>
+                </ul>
+                {% if is_sfw %}
+                <ul class="nav navbar-nav">
+                    <li><a href="http://www.IsSeptaFucked.com/"><span class="glyphicon"></span>&nbsp; NSFW Version</a></li>
+                </ul>
+                {% else %}
+                <ul class="nav navbar-nav">
+                    <li><a href="http://www.IsSeptaFcked.com/"><span class="glyphicon"></span>&nbsp; SFW Version</a></li>
+                </ul>
+                {% endif %}
+                <ul class="nav navbar-nav">
+                    <li><a href="https://www.facebook.com/IsSeptaFcked" target="_blank"><span class="glyphicon glyphicon-share-alt"></span>&nbsp; Visit us on Facebook</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="https://www.SeptaStats.com/" target="_blank"><span class="glyphicon glyphicon-share-alt"></span>&nbsp; SEPTA Stats</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="https://github.com/dmuth/IsSeptaFcked/issues" target="_blank"><span class="glyphicon glyphicon-share-alt"></span>&nbsp; Report A Bug</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="https://github.com/dmuth/IsSeptaFcked" target="_blank"><span class="fa fa-github fa-lg" aria-hidden="true"></span>&nbsp; Source Code</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container" style="padding-top: 0px; padding-bottom: 50px;">
+        {% block content %}{% endblock %}
+    </div>
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5766f44d0e59fdc5"></script>
+    <br><br><br>
+</body>
+</html>

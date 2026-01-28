@@ -1,0 +1,46 @@
+{
+  "name": "IsSeptaFcked Development",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    },
+    "ghcr.io/devcontainers/features/rust:1": {
+      "version": "latest",
+      "profile": "default"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "tamasfe.even-better-toml",
+        "serayuzgur.crates",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ],
+      "settings": {
+        "rust-analyzer.cargo.buildScripts.enable": true,
+        "rust-analyzer.checkOnSave.command": "clippy"
+      }
+    }
+  },
+
+  "forwardPorts": [5000, 5001],
+  "portsAttributes": {
+    "5000": {
+      "label": "Node.js App",
+      "onAutoForward": "notify"
+    },
+    "5001": {
+      "label": "Rust App",
+      "onAutoForward": "notify"
+    }
+  },
+
+  "postCreateCommand": "cd nodejs && npm install",
+
+  "remoteUser": "vscode"
+}

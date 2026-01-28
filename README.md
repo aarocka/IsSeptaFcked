@@ -1,147 +1,112 @@
+# IsSeptaFcked - Is SEPTA Fucked?
 
-# What is this?
+This is the code repository for the site [www.isSeptaFcked.com](http://www.isSeptaFcked.com/) / [www.isSeptaFucked.com](https://www.isSeptaFucked.com/).
 
-This is the code repository for the site <a href="http://www.isSeptaFcked.com/">www.isSeptaFcked.com</a>.  Or, if you 
-are a regular commuter on SEPTA: <a href="https://www.isSeptaFucked.com/">www.isSeptaFucked.com</a>.
+A SEPTA (Philadelphia public transit) status checker that displays how "fucked" Regional Rail trains and buses are based on delay data.
 
 Screenshot:
 <img src="https://raw.githubusercontent.com/dmuth/IsSeptaFcked/master/img/septa.png" />
 
+## Repository Structure
 
-# Why the profanity?
+This repository contains two implementations of the same application:
 
-This, and many more questions are answered in the FAQ: http://www.isseptafucked.com/faq
+- **`nodejs/`** - Original Node.js + Express implementation
+- **`rust/`** - Rust rewrite using Axum web framework
+- **`.devcontainer/`** - GitHub Codespaces configuration for both environments
 
+## Quick Start with GitHub Codespaces
 
-# How does it work?
+1. Click the "Code" button on GitHub and select "Create codespace on main"
+2. The devcontainer will automatically install Node.js and Rust
+3. Choose which version to run:
 
-Once every minute, it makes an API request for SEPTA's Regional Rail trains.  
-	It then esitmates "fuckedness" as follows:
+### Run the Node.js version:
+```bash
+cd nodejs
+npm install
+npm start
+```
+Visit http://localhost:5000
 
-- All trains < 10 minutes late: Not Fucked
-- 1 or more trains >= 10 minutes late and < 30 minutes late: A Little Fucked
-- 1 or more trains >= 30 minutes late: Fucked
+### Run the Rust version:
+```bash
+cd rust
+cargo run --release
+```
+Visit http://localhost:5000 (or 5001 if Node.js is running on 5000)
 
+## How It Works
 
-If you have any questions, feel free to reach out to me. I can be reached 
-here on GitHub or through the many social networks I am on: http://www.dmuth.org/contact
+Every minute, the app fetches data from SEPTA's Regional Rail and Bus APIs and determines the "fuckedness" level:
 
+- **All trains < 10 minutes late:** Not Fucked
+- **1+ trains >= 10 minutes late and < 30 minutes late:** A Little Fucked  
+- **1+ trains >= 30 minutes late:** Fucked
+- **5+ trains >= 30 minutes late:** Turbo Fucked
 
-# Media Coverage
+## Development
 
-- <a href="http://www.phillymag.com/news/2012/09/26/web-app-tells-septa-f%ED/">New Web App Tells You When SEPTA Is F#$%ed</a>
-- <a href="http://technical.ly/philly/2016/07/06/is-septa-fucked-douglas-muth/">Now more timely than ever: Is SEPTA F*cked?</a>
-- <a href="https://technical.ly/philly/2018/11/16/septa-regional-rail-turbo-fcked/">That snow storm sent SEPTA trains to new ‘Turbo F*cked’ status</a>
-- <a href="https://technical.ly/philly/2019/09/29/evolution-doug-muth-irreverent-is-septa-fucked-delay-tracker/">The evolution of Doug Muth’s irreverent SEPTA delay tracker</a>
+### Node.js Version
 
+See [`nodejs/README-original.md`](nodejs/README-original.md) for detailed Node.js development instructions.
 
-# Awards
+**Quick start:**
+```bash
+cd nodejs
+npm install
+npm start
+```
 
-Never thought I would win an award for profanity, Yet here we are.  IsSeptaFucked <a href="http://technical.ly/philly/2017/02/08/network-awards-winners/">won the "Best Side Prject" award</a> in the NET/WORK Philly 2017 awards.  
+### Rust Version
 
+**Prerequisites:**
+- Rust 1.70 or later (install from [rustup.rs](https://rustup.rs))
 
-# Architecture Overview
+**Quick start:**
+```bash
+cd rust
+cargo build --release
+cargo run --release
+```
 
-For fellow nerds out there, here's a brief rundown on how the various 
-	node.js modules are laid out:
+**Development with auto-reload:**
+```bash
+cargo install cargo-watch
+cargo watch -x run
+```
 
-- `views/` - Jade templates for public facing pages.
-- `public/` - CSS and the site's robots.txt
-- `node_modules/` - Modules installed with npm.  One school of thought says 
-	I should just rely on the site's install.js file.  But I always felt 
-	that a "git clone" operation should provide a complete working copy 
-	of the software.  I may revise this decision when that directory 
-	gets sufficently large. ;-)
-- `lib/logger.js` - Handles custom logging in Express.  Heroku uses proxies, 
-	and I would like to log the IP that incoming requests are forwarded for.
-	- `lib/septa/rr/api.js` - Module that actually connects to SEPTA's Regional Rail API, and translates 
-	their data into something we can actually use.
-	- `lib/septa/rr/main.js` - The main function in here is called at Express boot time,
-	and it is responsible for calling SEPTA's API once a minute.
-	It is also responsible for determing the level of "fuckedness" of Regional Rail. 
-	- `lib/septa/rr/text.js` - Create messages based on the lateness data.
-	- `lib/septa/bus/api.js` - Module that actually connects to SEPTA's bus API, and translates 
-	their data into something we can actually use.
-	- `lib/septa/bus/main.js` - The main function in here is called at Express boot time,
-	and it is responsible for calling SEPTA's bus API once every 5 minutes.
-	It is also responsible for determing the level of "fuckedness" of Regional Rail. 
-	- `lib/septa/bus/text.js` - Create messages based on the lateness data.
-- `lib/sfw.js` - Makes the determination if we are running under the SFW 
-	domain, and does filtering of strings.
-- `routes/` - Each file in here corresponds to the same named URI, and handles requests to that URI.
+## API Endpoints
 
+Both versions expose the same API:
 
-# Development
+- `GET /` - Main status page
+- `GET /api` - API documentation
+- `GET /api/status` - Overall status
+- `GET /api/rr` - Regional Rail full data
+- `GET /api/rr/status` - Regional Rail status only
+- `GET /api/rr/raw_data` - Raw SEPTA API data
+- `GET /api/bus` - Bus full data
+- `GET /api/bus/status` - Bus status only
+- `GET /api/bus/raw_data` - Raw bus API data
+- `GET /faq` - FAQ page
 
-## In Docker Compose
+## More Information
 
-- `docker-compose build && docker-compose up`
-- <a href="http://localhost:5000/">http://localhost:5000/</a>
+- **FAQ:** http://www.isseptafucked.com/faq
+- **Contact:** http://www.dmuth.org/contact
 
+## Media Coverage
 
-## In Docker
+- [What SEPTA's operating data says about the impact of the coronavirus pandemic](https://technical.ly/philly/2020/05/21/is-septa-fucked-doug-muth-operating-data-impact-coronavirus-pandemic-transit-transportation/)
+- [Now Siri can tell you just how badly SEPTA is f*ucked today](https://technical.ly/philly/2020/01/03/siri-ios-is-septa-fucked-shortcut/)
+- [The evolution of Doug Muth's irreverent SEPTA delay tracker](https://technical.ly/philly/2019/09/29/evolution-doug-muth-irreverent-is-septa-fucked-delay-tracker/)
+- [New Web App Tells You When SEPTA Is F#$%ed](http://www.phillymag.com/news/2012/09/26/web-app-tells-septa-f%ED/)
 
-- `docker build -t septa . && docker run -e TZ=EST5EDT -p 5000:5000 -it -v $(pwd):/mnt septa`
-- <a href="http://localhost:5000/">http://localhost:5000/</a>
+## Awards
 
+IsSeptaFucked won the ["Best Side Project" award](http://technical.ly/philly/2017/02/08/network-awards-winners/) in the NET/WORK Philly 2017 awards.
 
-## In bash in Docker
+## License
 
-- `docker build -t septa . && docker run -e TZ=EST5EDT -p 5000:5000 -it -v $(pwd):/mnt septa bash`
-   - You now have a shell in the Docker container.  You can run `npm start` or any other command there.
-- Run `npm start` to spin up the webserver on port 5000.
-- <a href="http://localhost:5000/">http://localhost:5000/</a>
-
-
-## The Manual Way (<a href="https://knowyourmeme.com/memes/y-tho">Y Tho</a>)
-
-- Run `npm start` to spin up the webserver on port 5000.
-- <a href="http://localhost:5000/">http://localhost:5000/</a>
-
-
-# Testing
-
-At some point I'd like to have unit testing, but because the functionality of the
-website is relatively limited, at the current time it's quicker to uncomment sections
-of the code that have the string `// Debug` in order to change behavior of the site for
-texting purposes.  Debug code can be found in these files:
-
-- `lib/septa/rr/main.js`
-- `lib/septa/rr/api.js`
-- `lib/septa/rr/text.js`
-- `lib/septa/bus/main.js`
-- `lib/septa/bus/api.js`
-- `lib/septa/bus/text.js`
-
-
-# Deployment in Fly.io
-
-- `flyctl deploy` - Deploy the app
-- `flyctl status` - Check the status of the app
-- `flyctl open` - Open the website in the browser
-- `flyctl ips list` - List IPs
-
-Additional troubleshhoting can be found at [https://fly.io/docs/getting-started/troubleshooting/](https://fly.io/docs/getting-started/troubleshooting/).
-
-
-# Deployment in Heroku
-
-- `brew tap heroku/brew && brew install heroku`
-   - Install the Heroku CLI
-- `heroku login`
-   - Log in to Heroku
-- `heroku git:remote -a isseptafcked`
-   - Add the remote for Heroku's Git repo as `heroku`
-- `git remote -v`
-   - Verify that a remote called `heroku` exists
-- `git push heroku`
-   - Push the changes out to Heroku
-
-
-# TODO
-
-- Express 4
-- Proper testing
-
-
-
+See [LICENSE.md](LICENSE.md)

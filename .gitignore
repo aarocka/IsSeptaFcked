@@ -1,6 +1,11 @@
 node_modules
 docker_node_modules
 
+# Rust
+rust/target/
+rust/Cargo.lock
+**/*.rs.bk
+
 # Steve Jobs
 .DS_Store
 
